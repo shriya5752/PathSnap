@@ -1,0 +1,2 @@
+model,training_type,training_candidate_rows,test_candidate_rows,evaluated_observations,top1_accuracy,macro_trip_top1,candidate_misses,candidate_miss_rate,macro_f1,precision,recall,log_loss,inference_seconds
+HistGradientBoosting,full_training_partition,1429420,140430,14043,0.8844976144698427,0.8954844900810992,33,0.002349925229651784,0.921453502182315,0.8516568379668632,0.8658815132048536,0.07128416670882998,0.4665505419834517
