@@ -7,7 +7,11 @@ def create_map(directory, output, predicted=None):
     trip=load_trip(directory)
     gps=trip.track[:,:2][:,::-1]
     nodes=trip.nodes[:,::-1]
-    m=folium.Map(location=gps.mean(axis=0).tolist(),zoom_start=13)
+    m=folium.Map(
+        location=gps.mean(axis=0).tolist(),
+        zoom_start=13,
+        tiles=None
+    )
     roads=folium.FeatureGroup(name='Road network',show=False)
     # One multi-polyline reduces HTML overhead compared with one layer per arc.
     folium.PolyLine(nodes[trip.arcs].tolist(),color='#888888',weight=1,opacity=.4).add_to(roads); roads.add_to(m)
