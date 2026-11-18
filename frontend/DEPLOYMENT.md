@@ -4,11 +4,12 @@ Use a trusted LAN with both laptops on the same network. Do not forward port 800
 
 ## Laptop 1: FastAPI and inference
 
-1. From the repository root, install the backend dependencies and point the API at the extracted student-test trips. Set `PATHSNAP_MODEL` if the team has provided the trained artifact. Without it, the real-trip API uses the geometry baseline. Leave `PATHSNAP_TRIP_ROOT` unset for the synthetic review demo.
+1. From the repository root, install the backend dependencies and point the API at the extracted student-test trips. Set `PATHSNAP_MODEL` to the checked-in HistGradientBoosting artifact to use the trained pipeline. If it is unset, the real-trip API uses the geometry baseline. Leave `PATHSNAP_TRIP_ROOT` unset for the synthetic review demo.
 
    ```powershell
-   python -m pip install -r backend/requirements.txt
+   python -m pip install -r backend/requirements-model.txt
    $env:PATHSNAP_TRIP_ROOT = 'C:\path\to\Student folder\student_test'
+   $env:PATHSNAP_MODEL = (Resolve-Path 'artifacts/person2/hgb_full_train.joblib').Path
    $env:PATHSNAP_EVALUATE_REFERENCE = '1' # Optional for permitted student-test evaluation
    python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
    ```

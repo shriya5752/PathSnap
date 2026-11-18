@@ -1,8 +1,8 @@
 """Candidate emissions for development and for a fitted classifier."""
 
-import numpy as np
+from pathlib import Path
 
-from preprocessing.create_features import FEATURE_COLUMNS
+import numpy as np
 
 
 class GeometryScorer:
@@ -15,22 +15,23 @@ class GeometryScorer:
 
 
 class ModelScorer:
-    """Load a trusted Joblib dict with model, feature_columns and positive_class."""
+    """Use Person 2's classifier probabilities as HMM emissions."""
+
+    keys = ["trip_id", "observation_id", "arc_id"]
 
     def __init__(self, path):
-        import joblib
+        from models.predict import load_model, score_candidates
 
-        artifact = joblib.load(path)
-        model = artifact["model"]
-        columns = list(artifact["feature_columns"])
-        if len(columns) != len(FEATURE_COLUMNS) or set(columns) != set(FEATURE_COLUMNS):
-            raise ValueError("Model feature columns must match Person 1's feature schema.")
-        if not callable(getattr(model, "predict_proba", None)):
-            raise ValueError("The fitted pipeline must implement predict_proba.")
-        self.positive_index = list(model.classes_).index(artifact["positive_class"])
-        self.model = model
-        self.columns = columns
-        self.name = f"{artifact.get('model_name') or type(model).__name__} + HMM/Viterbi"
+        self.path = str(Path(path).resolve())
+        self.score_candidates = score_candidates
+        model = load_model(self.path)
+        self.name = f"{type(model).__name__} + HMM/Viterbi"
 
     def scores(self, candidates):
-        return self.model.predict_proba(candidates[self.columns])[:, self.positive_index]
+        scored = self.score_candidates(candidates, model_path=self.path)
+        probabilities = candidates[self.keys].merge(
+            scored, on=self.keys, how="left", validate="one_to_one",
+        )["candidate_probability"]
+        if len(scored) != len(candidates) or probabilities.isna().any():
+            raise ValueError("Model probabilities must match every candidate ID exactly once.")
+        return probabilities.to_numpy()

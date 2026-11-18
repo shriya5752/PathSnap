@@ -39,26 +39,28 @@ Synthetic mode returns `metrics: null`. Real mode always reports computed contin
 
 ## Person 2 model handoff
 
-Real mode defaults to an untrained geometry scorer using distance and heading. To use the team's fitted classifier, install its required dependencies and set `PATHSNAP_MODEL` to a trusted Joblib artifact. The artifact must contain:
+Real mode defaults to an untrained geometry scorer using distance and heading. To use Person 2's trained HistGradientBoosting classifier, install the model dependencies and set the artifact path before starting FastAPI. The trained backend was verified with Python 3.12 and scikit-learn 1.9.1.
 
-- `model` with `predict_proba` and `classes_`, including fitted transformations if required
-- `feature_columns` using Person 1's feature names in the exact training order
-- `positive_class`, the value in `classes_` that indicates a matching candidate
-- Optional `model_name`, used in the API and comparison output
+```powershell
+python -m pip install -r backend/requirements-model.txt
+$env:PATHSNAP_MODEL = (Resolve-Path 'artifacts/person2/hgb_full_train.joblib').Path
+```
 
-Ask Person 2 for the artifact and the training environment versions. Joblib loads executable serialized Python, so use only the artifact your team supplies and trusts.
+The backend calls `models.predict.score_candidates` with Person 1's eight features. It aligns the returned `candidate_probability` values on `trip_id`, `observation_id`, and `arc_id` before Viterbi uses them as emissions. The same scores supply the classifier-only comparison. The artifact is Person 2's fitted classifier with positive class `1` and scikit-learn version `1.9.1`.
 
 ## Evaluate the decoder
 
 ```powershell
 python -m backend.evaluate $env:PATHSNAP_TRIP_ROOT --out results/geometry_baseline_student_test.csv
-# After receiving the real model, compare it with and without decoding.
-python -m backend.evaluate $env:PATHSNAP_TRIP_ROOT --model $env:PATHSNAP_MODEL --out results/team_model_student_test.csv
+# Compare Person 2's classifier with and without decoding.
+python -m backend.evaluate $env:PATHSNAP_TRIP_ROOT --model $env:PATHSNAP_MODEL --out results/hgb_student_test_viterbi.csv
 ```
 
 Viterbi adds log candidate scores and a transition score based on GPS displacement versus shortest directed network distance. The search includes the partial lengths of the start and end arcs and any intermediate arcs. The defaults allow 15 m of same-arc backward GPS jitter, cap network travel at `55 m/s × elapsed time + 35 m`, and divide absolute distance disagreement by 30 m in the transition score. Gaps over 10 seconds, nonpositive times, missing candidates and unreachable states split the decoding block. These are initial engineering defaults.
 
 Both methods use the same candidates and transitions. The independent baseline chooses the top candidate per point, then includes reachable intermediate arcs for route comparison. Continuity is the fraction of adjacent observation pairs with candidates on both ends and a time gap in `(0, 10]` seconds whose choices can be connected. Pointwise accuracy uses Person 1's usable reference alignments, with missed reference candidates counted as incorrect. Sequence similarity is one minus the arc-level edit distance divided by the longer sequence length. All sequence comparisons use the full ordered reference. These reference-aligned labels are weak labels.
+
+The [trained-model comparison CSV](../results/hgb_student_test_viterbi.csv) covers all 10 student-test trips. Pointwise accuracy rose from 88.45% to 93.23%, continuity from 88.58% to 99.92%, and mean route sequence similarity from 42.39% to 73.29% with Viterbi.
 
 ## Two-laptop rehearsal
 
