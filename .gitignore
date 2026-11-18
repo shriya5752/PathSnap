@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+data/
+Student folder/
+*.zip
+results/person1/*_features.csv
+results/person1/*_labeled.csv
+results/person1/*_alignment.csv
+results/person1/*.html
+results/person1/*_trajectory.png
