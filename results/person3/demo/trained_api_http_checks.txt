@@ -1,0 +1,21 @@
+PathSnap trained FastAPI live HTTP evidence
+Run time (UTC): 2026-11-18T09:34:56+00:00
+Requests sent from Laptop 1 to its Wi-Fi address.
+Base URL at test time: http://[laptop Wi-Fi address]:8000
+
+GET /health -> 200 {"status": "ok"}
+GET /trips -> 200 ["00000000", "00000007", "00000009", "00000040", "00000052", "00000056", "00000065", "00000076", "00000077", "00000091"]
+OPTIONS /predict -> 200; Access-Control-Allow-Origin: http://localhost:5173
+POST /predict 00000000 -> 200; GPS points=2503; arcs=262; accuracy=97.78%; continuity=99.92%
+POST /predict 00000007 -> 200; GPS points=1354; arcs=124; accuracy=88.58%; continuity=100.00%
+POST /predict 00000009 -> 200; GPS points=1049; arcs=509; accuracy=94.13%; continuity=99.90%
+POST /predict 00000040 -> 200; GPS points=2995; arcs=446; accuracy=96.80%; continuity=99.97%
+POST /predict 00000052 -> 200; GPS points=262; arcs=93; accuracy=100.00%; continuity=100.00%
+POST /predict 00000056 -> 200; GPS points=3958; arcs=1430; accuracy=95.79%; continuity=99.77%
+POST /predict 00000065 -> 200; GPS points=768; arcs=187; accuracy=86.71%; continuity=99.74%
+POST /predict 00000076 -> 200; GPS points=1486; arcs=602; accuracy=96.38%; continuity=100.00%
+POST /predict 00000077 -> 200; GPS points=3911; arcs=881; accuracy=84.51%; continuity=100.00%
+POST /predict 00000091 -> 200; GPS points=874; arcs=312; accuracy=92.54%; continuity=100.00%
+
+Model: HistGradientBoostingClassifier + HMM/Viterbi
+All 10 student-test trips returned HTTP 200.
