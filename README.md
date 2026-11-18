@@ -6,7 +6,7 @@ Team
 - Shruti Choudhary — PES1UG24AM271
 - Shriya Vasundhara Singh — PES1UG24AM269
 - Shristi Shukla — PES1UG24AM268
-- Pshriyadita Mohanty — PES1UG24AM270
+- Shriyadita Mohanty — PES1UG24AM270
 Repository structure
 Folder	Contents
 preprocessing/	Dataset exploration, candidate generation, feature extraction, weak labels
