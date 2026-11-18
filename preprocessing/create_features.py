@@ -1,6 +1,11 @@
 import numpy as np
 import pandas as pd
-from scipy.spatial import cKDTree
+try:
+    from scipy.spatial import cKDTree
+except ModuleNotFoundError as error:
+    if error.name != 'scipy':
+        raise
+    from .spatial_index import SpatialIndex as cKDTree
 
 FEATURE_COLUMNS = ['distance_m', 'heading_diff_deg', 'speed_mps', 'segment_length_m', 'time_gap_s', 'projection_fraction', 'heading_valid', 'time_valid']
 

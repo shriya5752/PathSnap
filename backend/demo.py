@@ -1,6 +1,6 @@
 """A synthetic trip with a tempting candidate on a disconnected road."""
 
-from viterbi import decode
+from .viterbi import decode
 
 TRIP_ID = "00000001"
 GPS_POINTS = (
@@ -26,6 +26,10 @@ TRANSITION_PROBABILITIES = {
 }
 
 
+def demo_arc_ids() -> list[int]:
+    return decode(CANDIDATE_SCORES, TRANSITION_PROBABILITIES)
+
+
 def run_demo() -> dict:
     independent = [
         max(candidates, key=candidates.__getitem__) for candidates in CANDIDATE_SCORES
@@ -34,7 +38,7 @@ def run_demo() -> dict:
         "trip_id": TRIP_ID,
         "mode": "synthetic_demo",
         "classifier_only_arc_ids": independent,
-        "predicted_arc_ids": decode(CANDIDATE_SCORES, TRANSITION_PROBABILITIES),
+        "predicted_arc_ids": demo_arc_ids(),
     }
 
 
