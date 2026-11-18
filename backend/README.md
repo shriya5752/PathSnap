@@ -64,4 +64,8 @@ The [trained-model comparison CSV](../results/hgb_student_test_viterbi.csv) cove
 
 ## Two-laptop rehearsal
 
+For the trained Windows demo, install `backend/requirements-model.txt`, set `PATHSNAP_TRIP_ROOT`, and run `./backend/Start_Trained_Demo.cmd` from PowerShell. It uses the checked-in trained classifier and defaults to loopback. Pass the backend laptop's Wi-Fi IPv4 address as the first argument for a two-laptop test. Set `PATHSNAP_EVALUATE_REFERENCE=1` for permitted reference evaluation.
+
+The [Person 3 handoff](../results/person3/demo/PathSnap_Part3_Handoff.md) links the trained-model comparison and documents the ready-to-demo endpoint checks.
+
 On Laptop 1, set the trip root and use `python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000` on the agreed demo network. Add the exact browser origin serving the UI to `PATHSNAP_EXTRA_ORIGINS` if it is different from `http://localhost:5173`. On Laptop 2, set the frontend's API base URL to Laptop 1's LAN address and verify all three endpoints, the map, and the backend's request logs. For the final demo, point the backend at the organizer-provided evaluator trip directory and enable the permitted server-side evaluation flag.

@@ -1,0 +1,18 @@
+INFO:     Started server process [PID redacted]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://[laptop Wi-Fi address]:8000 (Press CTRL+C to quit)
+INFO:     [laptop Wi-Fi address] - "GET /health HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "GET /health HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "GET /trips HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "OPTIONS /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
+INFO:     [laptop Wi-Fi address] - "POST /predict HTTP/1.1" 200 OK
