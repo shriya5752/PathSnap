@@ -1,0 +1,26 @@
+{
+  "model_name": "HistGradientBoostingClassifier",
+  "model_status": "integration_candidate",
+  "training_partition": "80_train_trips",
+  "training_candidate_rows": 1429420,
+  "training_observations": 142942,
+  "feature_columns": [
+    "distance_m",
+    "heading_diff_deg",
+    "speed_mps",
+    "segment_length_m",
+    "time_gap_s",
+    "projection_fraction",
+    "heading_valid",
+    "time_valid"
+  ],
+  "python_model_library": "scikit-learn",
+  "sklearn_version": "1.9.1",
+  "random_state": 42,
+  "parameters": {
+    "max_iter": 100,
+    "max_leaf_nodes": 31
+  },
+  "training_seconds": 5.295028167020064,
+  "student_test_evaluated": false
+}
