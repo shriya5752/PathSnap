@@ -1,0 +1,12 @@
+"trip_id","http","observations","arcs","vertices","model","accuracy","continuity","similarity","blocks","http_seconds","note"
+"00000000","200","2503","262","118","HistGradientBoostingClassifier + HMM/Viterbi","0.9778440562420111","0.9992006394884093","0.6488549618320612","3","2.778",
+"00000007","200","1354","124","125","HistGradientBoostingClassifier + HMM/Viterbi","0.8858024691358025","1","0.967741935483871","1","1.966",
+"00000009","200","1049","509","502","HistGradientBoostingClassifier + HMM/Viterbi","0.9413489736070382","0.9990458015267175","0.8113948919449901","2","3.782",
+"00000040","200","2995","446","174","HistGradientBoostingClassifier + HMM/Viterbi","0.9679702048417133","0.9996659986639946","0.6928251121076233","2","4.24",
+"00000052","200","262","93","94","HistGradientBoostingClassifier + HMM/Viterbi","1","1","0.9789473684210527","1","0.353",
+"00000056","200","3958","1430","597","HistGradientBoostingClassifier + HMM/Viterbi","0.9579139981701739","0.9977255496588324","0.8867132867132868","10","9.171",
+"00000065","200","768","187","25","HistGradientBoostingClassifier + HMM/Viterbi","0.8671171171171171","0.9973821989528796","0.7593582887700535","6","1.09",
+"00000076","200","1486","602","103","HistGradientBoostingClassifier + HMM/Viterbi","0.9638318670576735","1","0.6029900332225914","25","3.728",
+"00000077","200","3911","881","882","HistGradientBoostingClassifier + HMM/Viterbi","0.8450760608486789","1","0.30419977298524403","1","9.687",
+"00000091","200","874","312","313","HistGradientBoostingClassifier + HMM/Viterbi","0.9253731343283582","1","0.6762820512820513","1","2.784",
+"unknown-trip","404","0","0","0",,,,,,"0.059","Unknown trip ID."

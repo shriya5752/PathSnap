@@ -6,7 +6,7 @@ import './App.css'
 
 const empty = []
 const views = [['raw', 'Raw GPS'], ['route', 'Reconstructed'], ['overlay', 'Overlay']]
-const displayMetric = value => typeof value === 'number' && Number.isFinite(value) ? value
+const displayPercent = value => typeof value === 'number' && Number.isFinite(value) ? `${(value * 100).toFixed(2)}%`
   : typeof value === 'string' && value.trim() ? value : 'N/A'
 
 export default function App() {
@@ -76,10 +76,12 @@ export default function App() {
   const gps = result?.gps_points ?? getPreview(selected)
   const segments = result?.segments ?? empty
   const hasRoute = segments.some(segment => segment.length > 1)
+  const routeBlocks = result?.metrics.route_blocks
+  const partialRoute = hasRoute && mode !== 'raw' && segments.length === 1 && Number.isInteger(routeBlocks) && routeBlocks > 1
   const busy = status === 'Reconstructing…'
   const syntheticBackend = !demoMode && /synthetic/i.test(result?.model_name ?? '')
   const metrics = [gps?.length ?? 'N/A', result ? new Set(result.predicted_arc_ids).size : 'N/A',
-    displayMetric(result?.metrics.accuracy), displayMetric(result?.metrics.route_continuity)]
+    displayPercent(result?.metrics.accuracy), displayPercent(result?.metrics.route_continuity)]
   const visibleStatus = catalog.status === 'loading' ? 'Loading trips…' : catalog.status === 'error'
     ? 'Trip list unavailable' : selected ? status : 'No trips available'
   const alert = error || catalog.error
@@ -121,7 +123,7 @@ export default function App() {
         <RouteMap key={selected} gps={gps ?? empty} segments={segments} mode={mode}
           emptyMessage={busy ? 'Waiting for reconstruction…' : result ? 'No GPS observations returned.' : selected ? 'Reconstruct this journey to load its GPS observations.' : 'No journey selected.'} />
         <div className="map-caption"><ul aria-label="Map legend"><li><i className="gps-symbol" />Raw GPS observations</li><li><i className="route-symbol" />Reconstructed route</li></ul>
-          <span>{demoMode ? 'Synthetic geometry · not a road-network result' : syntheticBackend ? 'Synthetic backend fixture · not real inference' : hasRoute ? 'Geometry supplied by the API' : 'Reconstructed layers require route geometry'}</span></div>
+          <span>{demoMode ? 'Synthetic geometry · not a road-network result' : syntheticBackend ? 'Synthetic backend fixture · not real inference' : partialRoute ? `Showing the longest of ${routeBlocks} decoded blocks` : hasRoute ? 'Geometry supplied by the API' : 'Reconstructed layers require route geometry'}</span></div>
       </section>
       <dl className="metrics" aria-label="Reconstruction metrics">
         {['GPS observations', 'Matched road segments', 'Accuracy', 'Route continuity'].map((label, index) =>
