@@ -59,7 +59,16 @@ def run(root, output, k=10, shortlist=64):
             if i==0: trip_plot(trip,route,output/f'{split}_trajectory.png')
             print(split,d.name,len(f),flush=True)
     summary=pd.DataFrame(summaries); summary.to_csv(output/'dataset_summary.csv',index=False)
-    pd.DataFrame(quality).to_csv(output/'label_quality.csv',index=False)
+    quality_df=pd.DataFrame(quality)
+    quality_df.to_csv(output/'label_quality.csv',index=False)
+    cols=['gps_points','nodes','arcs','reference_arcs','missing_values','nonpositive_gaps','one_second_gaps','gaps_gt_5s','isolated_nodes','reference_discontinuities']
+    grouped=summary.groupby('split')
+    aggregate=grouped[cols].sum()
+    aggregate.insert(0,'trips',grouped.size())
+    aggregate['max_gap_s']=grouped.max_gap_s.max()
+    aggregate['max_weak_components']=grouped.weak_components.max()
+    aggregate.to_csv(output/'partition_summary.csv')
+    quality_df.groupby('split')[['observations','usable','ambiguous','far','candidate_misses','candidate_rows']].sum().to_csv(output/'label_summary.csv')
     plots(summary,output)
 
 if __name__=='__main__':

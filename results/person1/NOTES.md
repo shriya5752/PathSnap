@@ -1,0 +1,9 @@
+# Measured preprocessing run
+
+All 90 available trips were processed successfully using the default top-10 candidate configuration and the label thresholds in HANDOFF.md. No evaluator data was available or accessed. Two synthetic unit tests passed. Folium map generation was tested on student-test trip 00000007.
+
+The CSV files in this directory record aggregate measurements from that run. Train has 208,417 observations, student test has 19,160. All input files passed finite-value, coordinate-range, integer-ID and ID-range checks. There are no nonpositive time intervals, but 1,216 training intervals and 44 student-test intervals exceed five seconds. The longest training gap is 153,064 seconds: handle it explicitly in the decoder rather than assuming every point is one second apart. Weak connectivity is measured on the undirected version of the road graph, not as proof of directed reachability. There are 13 adjacent reference arc discontinuities in training and one in student test.
+
+The alignment is intentionally conservative: 143,823/208,417 training observations and 14,043/19,160 student-test observations are marked usable. The candidate-miss rate among usable observations is 881/143,823 = 0.61% for training and 33/14,043 = 0.24% for student test. These are not independently validated road labels or model accuracy. Far and ambiguous observations are excluded from supervised labels; report their coverage limitations when describing Top-1 or classification metrics. The high number of far training observations should be examined by the team before treating the reference as reliable.
+
+Raw data, per-trip coordinates, maps, and row-level training tables are regenerated locally; do not publish them without permission. The aggregate charts and CSVs here are preprocessing evidence, not model experiments. The team should reproduce and explain them, including disclosure of AI assistance.
